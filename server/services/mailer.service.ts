@@ -1,12 +1,7 @@
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 import { env } from "../config/env";
 
-const transporter = nodemailer.createTransport({
-  host: env.smtp.host,
-  port: env.smtp.port,
-  secure: env.smtp.secure,
-  auth: { user: env.smtp.user, pass: env.smtp.pass },
-});
+const resend = new Resend(env.resendApiKey);
 
 export async function sendContactEmail(input: {
   name: string;
@@ -27,11 +22,13 @@ export async function sendContactEmail(input: {
     input.message,
   ].join("\n");
 
-  await transporter.sendMail({
+  const result = await resend.emails.send({
     from: env.mail.from,
-    to: env.mail.to,
-    replyTo: input.email,
+    to: [env.mail.to],
     subject,
     text,
+    replyTo: input.email,
   });
+
+  return result;
 }

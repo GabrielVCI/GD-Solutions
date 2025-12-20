@@ -6,16 +6,6 @@ import Footer from '@/components/Footer';
 import ContactForm from '@/components/ContactForm';
 import { FaWhatsapp } from 'react-icons/fa';
 
-/**
- * Home Page
- * Diseño: Elegancia minimalista con precisión geométrica
- * - Hero con fondo azul oscuro y texto blanco
- * - Vista general de servicios con íconos mínimos
- * - Sección "Por qué elegirnos"
- * - Placeholder de próximos clientes
- * - Sección de planes (CTA a WhatsApp por plan)
- * - Formulario de contacto
- */
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
 
@@ -111,7 +101,7 @@ export default function Home() {
       <Navbar />
 
       {/* Hero Section */}
-      <section
+      {/* <section
         className="relative bg-[#083351] text-white overflow-hidden"
         style={{
           backgroundImage: 'url(/images/hero-bg-1.png)',
@@ -142,13 +132,165 @@ export default function Home() {
         </div>
 
         {/* Diagonal Divider */}
-        <div
+        {/* <div
           className="absolute bottom-0 left-0 right-0 h-24 bg-white"
           style={{
             clipPath: 'polygon(0 40%, 100% 0, 100% 100%, 0 100%)',
           }}
         ></div>
-      </section>
+      </section> */}  
+
+      <section
+  className="relative bg-[#083351] text-white overflow-hidden"
+  style={{
+    backgroundImage: "url(/images/hero-bg-1.png)",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundAttachment: "fixed",
+  }}
+>
+  {/* Overlay premium */}
+  <div className="absolute inset-0 bg-[#083351]/70"></div>
+
+  {/* Glow + grain sutil */}
+  <div className="absolute inset-0 pointer-events-none">
+    <div className="absolute -top-24 -left-24 h-[420px] w-[420px] rounded-full bg-[#f4832c]/20 blur-3xl" />
+    <div className="absolute -bottom-32 -right-24 h-[520px] w-[520px] rounded-full bg-white/10 blur-3xl" />
+    <div className="absolute inset-0 opacity-[0.08] mix-blend-overlay [background-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%22120%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%222%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22120%22 height=%22120%22 filter=%22url(%23n)%22 opacity=%220.25%22/%3E%3C/svg%3E')]" />
+  </div>
+
+  <div className="relative container pt-28 pb-20 md:pt-36 md:pb-28">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      {/* Left: Copy */}
+      <div className="lg:col-span-7">
+        {/* Eyebrow */}
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 backdrop-blur-md">
+          <span className="h-2 w-2 rounded-full bg-[#f4832c]" />
+          <span className="text-sm text-white/85">
+            Diseño premium • Performance • SEO • WhatsApp listo
+          </span>
+        </div>
+
+        <h1 className="mt-6 text-[2.6rem] leading-[1.05] md:text-[4.2rem] font-semibold tracking-[-0.02em]">
+          Soluciones digitales{" "}
+          <span className="text-white/80">para negocios</span>{" "}
+          <span className="relative inline-block">
+            modernos
+            <span className="absolute -bottom-2 left-0 right-0 h-[6px] rounded-full bg-[#f4832c]/70 blur-[0.5px]" />
+          </span>
+        </h1>
+
+        <p className="mt-6 text-base md:text-lg text-white/75 leading-relaxed max-w-xl">
+          Creamos sitios web con estética limpia y enfoque comercial: rápidos, claros y listos para
+          convertir visitas en conversaciones y ventas.
+        </p>
+
+        {/* CTA Row */}
+        <div className="mt-10 flex flex-col sm:flex-row gap-3">
+          <Link href="/contacto">
+            <a className="group inline-flex items-center justify-center gap-2 rounded-xl bg-white text-[#083351] px-6 py-4 font-semibold shadow-[0_16px_50px_rgba(0,0,0,0.35)] transition-transform duration-200 hover:scale-[1.02] no-underline">
+              Empezar hoy
+              <ArrowRight className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-0.5" />
+            </a>
+          </Link>
+
+          <Link href="/planes">
+            <a className="inline-flex items-center justify-center rounded-xl border border-white/20 bg-white/5 px-6 py-4 font-semibold text-white/90 backdrop-blur-md transition-colors duration-200 hover:bg-white/10 no-underline">
+              Ver planes
+            </a>
+          </Link>
+        </div>
+
+        {/* Trust line */}
+        <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-white/65">
+          <div className="flex items-center gap-2">
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-white/50" />
+            Entrega rápida
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-white/50" />
+            Hosting incluido en planes
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-white/50" />
+            Soporte real
+          </div>
+        </div>
+      </div>
+
+      {/* Right: Premium card / highlights */}
+      <div className="lg:col-span-5">
+        <div className="relative rounded-2xl border border-white/15 bg-white/5 backdrop-blur-xl p-6 md:p-7 shadow-[0_30px_100px_rgba(0,0,0,0.45)]">
+          {/* Top gradient border */}
+          <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="text-sm text-white/70">Enfoque</p>
+              <h3 className="mt-1 text-xl font-semibold tracking-tight">
+                Conversión + presencia premium
+              </h3>
+            </div>
+            <div className="rounded-xl bg-[#f4832c]/15 border border-[#f4832c]/30 px-3 py-2 text-sm text-white/85">
+              Listo para crecer
+            </div>
+          </div>
+
+          <div className="mt-6 grid grid-cols-1 gap-4">
+            <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+              <p className="text-sm text-white/70">Velocidad</p>
+              <p className="mt-1 text-base font-semibold">Carga rápida y optimizada</p>
+              <p className="mt-1 text-sm text-white/60">
+                Mejores métricas para usuarios y buscadores.
+              </p>
+            </div>
+
+            <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+              <p className="text-sm text-white/70">Diseño</p>
+              <p className="mt-1 text-base font-semibold">Minimalista, moderno, confiable</p>
+              <p className="mt-1 text-sm text-white/60">
+                Estética limpia con detalles premium (sin “plantilla genérica”).
+              </p>
+            </div>
+
+            <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+              <p className="text-sm text-white/70">Contacto</p>
+              <p className="mt-1 text-base font-semibold">WhatsApp + Formulario</p>
+              <p className="mt-1 text-sm text-white/60">
+                El cliente te escribe en segundos (menos fricción).
+              </p>
+            </div>
+          </div>
+
+          {/* Micro-CTA */}
+          <div className="mt-6 flex items-center justify-between gap-4">
+            <span className="text-sm text-white/65">
+              ¿Quieres ver una propuesta rápida?
+            </span>
+            <Link href="/contacto">
+              <a className="inline-flex items-center gap-2 text-sm font-semibold text-white hover:text-white/90 no-underline">
+                Hablemos
+                <ArrowRight className="w-4 h-4" />
+              </a>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {/* Divider premium (más suave) */}
+  <div className="absolute bottom-0 left-0 right-0 h-24 bg-white">
+    <div
+      className="absolute inset-0"
+      style={{
+        clipPath: "polygon(0 55%, 100% 12%, 100% 100%, 0 100%)",
+      }}
+    />
+  </div>
+</section>
+
 
       {/* Services Overview Section */}
       <section className="py-24 md:py-32 bg-white">

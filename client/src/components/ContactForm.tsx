@@ -160,30 +160,29 @@
 // }
 
 
-import { useState } from 'react';
-import { ArrowRight, CheckCircle, AlertCircle } from 'lucide-react';
-import { toast } from 'sonner';
+import { useState } from "react";
+import { ArrowRight, CheckCircle } from "lucide-react";
+import { toast } from "sonner";
 
-/**
- * Contact Form Component
- * Design: Minimalist Elegance with Geometric Precision
- * - Clean, user-friendly form with validation
- * - Success and error feedback
- * - Sends to gdsolutionslat@gmail.com
- */
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
+
 export default function ContactForm() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    title: '',
-    message: '',
-    telefono: ''
+    name: "",
+    email: "",
+    title: "",
+    message: "",
+    telefono: "",
+    // honeypot anti-bot (campo invisible)
+    companyWebsite: "",
   });
 
   const [isLoading, setIsLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -193,38 +192,70 @@ export default function ContactForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
-    // Validate form
-    if (!formData.name || !formData.email || !formData.title || !formData.message || !formData.telefono) {
-      toast.error('Por favor, llena todos los campos');
+
+    // Validación básica
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.title ||
+      !formData.message ||
+      !formData.telefono
+    ) {
+      toast.error("Por favor, llena todos los campos");
       return;
     }
 
-    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      toast.error('Ingrese un correo válido');
+      toast.error("Ingrese un correo válido");
+      return;
+    }
+
+    const tel = String(formData.telefono).trim();
+    if (tel.length != 10) {
+      toast.error("Ingrese un teléfono válido");
       return;
     }
 
     setIsLoading(true);
 
     try {
-      // Simulate form submission (in a real app, this would send to a backend)
-      // For now, we'll show a success message
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const resp = await fetch(`${API_BASE}/api/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          company: formData.title, // 👈 backend espera company
+          phone: formData.telefono, // 👈 backend espera phone
+          message: formData.message,
+          companyWebsite: formData.companyWebsite, // honeypot
+        }),
+      });
 
-      // Show success message
-      toast.success('Mensaje enviado exitósamente! Te contactaremos lo más rápido posible.');
+      const data = await resp.json().catch(() => ({}));
+
+      if (!resp.ok || data?.ok === false) {
+        toast.error(data?.message || "Error al enviar el mensaje, inténtelo de nuevo.");
+        return;
+      }
+
+      toast.success("Mensaje enviado exitósamente! Te contactaremos lo más rápido posible.");
       setSubmitted(true);
 
-      // Reset form after 2 seconds
       setTimeout(() => {
-        setFormData({ name: '', email: '', title: '', message: '', telefono: '' });
+        setFormData({
+          name: "",
+          email: "",
+          title: "",
+          message: "",
+          telefono: "",
+          companyWebsite: "",
+        });
         setSubmitted(false);
       }, 2000);
-    } catch (error) {
-      toast.error('Error al enviar el mensaje, inténtelo de nuevo.');
+    } catch {
+      toast.error("Error de red. Inténtelo de nuevo.");
     } finally {
       setIsLoading(false);
     }
@@ -235,13 +266,26 @@ export default function ContactForm() {
       <div className="text-center py-12">
         <CheckCircle className="w-16 h-16 text-[#f4832c] mx-auto mb-4" />
         <h3 className="text-2xl font-bold text-[#083351] mb-2">Muchas Gracias!</h3>
-        <p className="text-gray-600">Hemos recibido tu mensajes, nos contactaremos pronto.</p>
+        <p className="text-gray-600">Hemos recibido tu mensaje, nos contactaremos pronto.</p>
       </div>
     );
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Honeypot oculto */}
+      <div className="hidden">
+        <label>Website</label>
+        <input
+          type="text"
+          name="companyWebsite"
+          value={formData.companyWebsite}
+          onChange={handleChange}
+          autoComplete="off"
+          tabIndex={-1}
+        />
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <input
           type="text"
@@ -274,11 +318,12 @@ export default function ContactForm() {
       />
 
       <input
-        type="number"
+        type="tel"
         name="telefono"
         placeholder="Teléfono"
         value={formData.telefono}
         onChange={handleChange}
+        inputMode="tel"
         className="w-full px-6 py-4 border border-[#e5e5e5] rounded-lg focus:outline-none focus:border-[#f4832c] transition-colors duration-200 text-[#083351] placeholder-gray-500"
         required
       />
@@ -312,7 +357,7 @@ export default function ContactForm() {
       </button>
 
       <p className="text-center text-gray-600 text-sm">
-        O comunícate directamente a {' '}
+        O comunícate directamente a{" "}
         <a href="mailto:gdsolutionslat@gmail.com" className="text-[#f4832c] hover:underline">
           gdsolutionslat@gmail.com
         </a>

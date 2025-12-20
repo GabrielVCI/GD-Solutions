@@ -8,8 +8,17 @@ export function createApp() {
   const app = express();
 
   app.use(helmet());
-  app.use(cors({ origin: env.corsOrigin, credentials: false }));
+app.use(cors({
+  origin: ["http://localhost:3000"],
+  credentials: true,
+}));
   app.use(express.json({ limit: "50kb" }));
+
+  // IMPORTANTE: responder preflight
+app.options("*", cors({
+  origin: ["http://localhost:3000"],
+  credentials: true,
+}));
 
   app.get("/api/health", (_req, res) => res.json({ ok: true }));
 
