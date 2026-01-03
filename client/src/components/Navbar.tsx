@@ -2,14 +2,6 @@ import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Link } from 'wouter';
 
-/**
- * Navbar Component
- * Design: Minimalist Elegance with Geometric Precision
- * - Clean, sticky header with dark blue background
- * - Responsive mobile menu with smooth animations
- * - Clear navigation hierarchy
- * - Orange accent for active/hover states
- */
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -23,7 +15,7 @@ export default function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 bg-white border-b border-[#e5e5e5] shadow-sm">
-      <div className="container flex items-center justify-between h-20">
+      <div className=" flex items-center justify-between h-20 px-10 md:px-20 lg:px-25">
         {/* Logo */}
         <Link href="/">
           <a className="flex items-center gap-3 no-underline">
@@ -40,7 +32,7 @@ export default function Navbar() {
 
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden min-[950px]:flex items-center gap-10">
           {navItems.map((item) => (
             <Link key={item.href} href={item.href}>
               <a className="text-[#083351] font-medium text-sm hover:text-[#f4832c] transition-colors duration-200 no-underline">
@@ -51,18 +43,20 @@ export default function Navbar() {
         </div>
 
         {/* CTA Button - Desktop */}
-        <div className="hidden md:block">
-          <Link href="/contacto">
-            <a className="btn-primary text-sm no-underline">
-              Cotizar Ahora
-            </a>
-          </Link>
+        <div className="hidden min-[950px]:flex items-center gap-10">
+          {navItems.map((item) => (
+            <Link key={item.href} href={item.href}>
+              <a className="text-[#083351] font-medium text-sm hover:text-[#f4832c] transition-colors duration-200 no-underline">
+                {item.label}
+              </a>
+            </Link>
+          ))}
         </div>
 
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden p-2 hover:bg-[#f5f5f5] rounded transition-colors"
+          className="min-[950px]:hidden p-2 hover:bg-[#f5f5f5] rounded transition-colors"
           aria-label="Toggle menu"
         >
           {isOpen ? (
@@ -75,7 +69,7 @@ export default function Navbar() {
 
       {/* Mobile Navigation */}
       {isOpen && (
-        <div className="md:hidden bg-white border-t border-[#e5e5e5] animate-in fade-in slide-in-from-top-2 duration-200">
+  <div className="min-[950px]:hidden bg-white border-t border-[#e5e5e5] animate-in fade-in slide-in-from-top-2 duration-200">
           <div className="container py-4 flex flex-col gap-4">
             {navItems.map((item) => (
               <Link key={item.href} href={item.href}>
@@ -92,7 +86,7 @@ export default function Navbar() {
                 className="btn-primary text-sm text-center no-underline"
                 onClick={() => setIsOpen(false)}
               >
-                Inicia Ahora
+                Cotizar Ahora
               </a>
             </Link>
           </div>
