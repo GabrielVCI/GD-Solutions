@@ -1,17 +1,37 @@
 import * as React from "react";
 import {
-  Html, Head, Preview, Body, Container, Section, Text, Hr,
+  Html,
+  Head,
+  Preview,
+  Body,
+  Container,
+  Section,
+  Text,
+  Hr,
 } from "@react-email/components";
 
-export default function ContactClientEmail({ name }) {
+export type ContactClientEmailProps = {
+  name: string;
+};
+
+export default function ContactClientEmail({
+  name,
+}: ContactClientEmailProps) {
   return (
     <Html>
       <Head />
       <Preview>Hemos recibido tu mensaje - GD Solutions</Preview>
+
       <Body style={{ backgroundColor: "#ffffff", margin: 0, padding: 0 }}>
         <Container style={{ maxWidth: 640, margin: "0 auto", padding: 24 }}>
           <Section>
-            <Text style={{ fontSize: 20, fontWeight: 700, margin: "0 0 12px" }}>
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: 700,
+                margin: "0 0 12px",
+              }}
+            >
               Gracias por contactarnos
             </Text>
 
