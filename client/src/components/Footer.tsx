@@ -101,12 +101,12 @@ export default function Footer() {
             &copy; {currentYear} GD Solutions. All rights reserved.
           </p>
           <div className="flex gap-6">
-            <a href="#" className="text-gray-400 hover:text-[#f4832c] transition-colors duration-200 text-sm">
+            <Link to='/legal' className="text-gray-400 hover:text-[#f4832c] transition-colors duration-200 text-sm">
               Política de Privacidad
-            </a>
-            <a href="#" className="text-gray-400 hover:text-[#f4832c] transition-colors duration-200 text-sm">
+            </Link>
+            <Link to='/terms' className="text-gray-400 hover:text-[#f4832c] transition-colors duration-200 text-sm">
               Términos de Uso
-            </a>
+            </Link>
           </div>
         </div>
       </div>

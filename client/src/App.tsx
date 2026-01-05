@@ -10,17 +10,24 @@ import About from "./pages/About";
 import Planes from "./pages/Planes"
 import Contacto from "./pages/Contacto"
 import WhatsAppFloat from "./components/WhatsAppFloat";
+import ScrollToTop from "./components/ScrollToTop";
+import Legal from "./pages/Legal";
+import Terms from "./pages/Terms";
 
 function Router() { 
  return (
     <>
-      <Switch>
+
+     <ScrollToTop />
+      <Switch> 
         <Route path={"/"} component={Home} />
         <Route path={"/servicios"} component={Services} />
         <Route path={"/nosotros"} component={About} />
         <Route path={"/planes"} component={Planes} />
         <Route path={"/contacto"} component={Contacto} />
         <Route path={"/404"} component={NotFound} />
+        <Route path={"/legal"} component={Legal} />
+        <Route path={"/terms"} component={Terms} />
         {/* Final fallback route */}
         <Route component={NotFound} />
       </Switch>

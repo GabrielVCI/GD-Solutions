@@ -1,22 +1,23 @@
-import { useState } from 'react';
-import { Menu, X } from 'lucide-react';
-import { Link } from 'wouter';
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
+import { Link } from "wouter";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
-    { label: 'Inicio', href: '/' },
-    { label: 'Servicios', href: '/servicios' },
-    { label: 'Sobre Nosotros', href: '/nosotros' },
-    { label: 'Planes', href: '/planes' },
-    { label: 'Contacto', href: '/contacto' },
+    { label: "Inicio", href: "/" },
+    { label: "Servicios", href: "/servicios" },
+    { label: "Sobre Nosotros", href: "/nosotros" },
+    { label: "Planes", href: "/planes" },
+    { label: "Contacto", href: "/contacto" },
   ];
 
   return (
-    <nav className="sticky top-0 z-50 bg-white border-b border-[#e5e5e5] shadow-sm">
-      <div className=" flex items-center justify-between h-20 px-10 md:px-20 lg:px-25">
+    <nav className="sticky top-0 z-50 bg-white border-b border-[#e5e5e5]">
+      <div className="flex items-center justify-between h-20 px-6 sm:px-10 md:px-16 lg:px-20">
         {/* Logo */}
+
         <Link href="/">
           <a className="flex items-center gap-3 no-underline">
             {/* Logo */}
@@ -30,8 +31,7 @@ export default function Navbar() {
           </a>
         </Link>
 
-
-        {/* Desktop Navigation */}
+        {/* Desktop Navigation (>= 950px) */}
         <div className="hidden min-[950px]:flex items-center gap-10">
           {navItems.map((item) => (
             <Link key={item.href} href={item.href}>
@@ -42,22 +42,19 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* CTA Button - Desktop */}
-        <div className="hidden min-[950px]:flex items-center gap-10">
-          {navItems.map((item) => (
-            <Link key={item.href} href={item.href}>
-              <a className="text-[#083351] font-medium text-sm hover:text-[#f4832c] transition-colors duration-200 no-underline">
-                {item.label}
-              </a>
-            </Link>
-          ))}
+        {/* CTA Button - Desktop (>= 950px) */}
+        <div className="hidden min-[950px]:block">
+          <Link href="/contacto">
+            <a className="btn-primary text-sm no-underline">Cotizar Ahora</a>
+          </Link>
         </div>
 
-        {/* Mobile Menu Button */}
+        {/* Mobile Menu Button (< 950px) */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="min-[950px]:hidden p-2 hover:bg-[#f5f5f5] rounded transition-colors"
-          aria-label="Toggle menu"
+          className="min-[950px]:hidden p-2 rounded transition-colors hover:bg-[#f5f5f5]"
+          aria-label="Abrir menú"
+          aria-expanded={isOpen}
         >
           {isOpen ? (
             <X className="w-6 h-6 text-[#083351]" />
@@ -67,10 +64,10 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Mobile Navigation (< 950px) */}
       {isOpen && (
-  <div className="min-[950px]:hidden bg-white border-t border-[#e5e5e5] animate-in fade-in slide-in-from-top-2 duration-200">
-          <div className="container py-4 flex flex-col gap-4">
+        <div className="min-[950px]:hidden bg-white border-t border-[#e5e5e5] animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="px-6 sm:px-10 py-4 flex flex-col gap-2">
             {navItems.map((item) => (
               <Link key={item.href} href={item.href}>
                 <a
@@ -81,9 +78,10 @@ export default function Navbar() {
                 </a>
               </Link>
             ))}
-            <Link href="/contact">
+
+            <Link href="/contacto">
               <a
-                className="btn-primary text-sm text-center no-underline"
+                className="btn-primary text-sm text-center no-underline mt-2"
                 onClick={() => setIsOpen(false)}
               >
                 Cotizar Ahora
@@ -95,3 +93,6 @@ export default function Navbar() {
     </nav>
   );
 }
+
+
+
