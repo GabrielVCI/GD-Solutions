@@ -2,7 +2,6 @@ import { useState } from "react";
 import { ArrowRight, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -58,7 +57,7 @@ export default function ContactForm() {
     setIsLoading(true);
 
     try {
-      const resp = await fetch("http://localhost:3000/api/send-email", {
+      const resp = await fetch("/api/send-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
