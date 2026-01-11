@@ -175,3 +175,4 @@ const footer = {
   textAlign: "center" as const,
   textTransform: "uppercase" as const,
 };
+// 

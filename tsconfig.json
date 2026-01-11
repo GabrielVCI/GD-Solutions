@@ -1,5 +1,5 @@
 {
-  "include": ["src/**/*", "shared/**/*", "server/**/*"],
+  "include": ["src/**/*", "shared/**/*", "server/**/*", "api/ContactForm.tsx"],
   
   "exclude": ["node_modules", "build", "dist", "**/*.test.ts"],
   "compilerOptions": {
