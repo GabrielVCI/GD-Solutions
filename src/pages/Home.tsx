@@ -58,7 +58,7 @@ export default function Home() {
       highlighted: false,
     },
     {
-      name: 'Plan MyPymes',
+      name: 'Plan MiPymes',
       price: 'RD$13,000',
       period: 'pago único',
       features: [
@@ -74,7 +74,7 @@ export default function Home() {
       price: 'A MEDIDA',
       period: 'mensual',
       features: [
-        'Todo lo del Plan MyPymes',
+        'Todo lo del Plan MiPymes',
         'Configuración de campaña en Google Ads',
         'Gestión de campañas',
         'Estrategia adaptada a tu presupuesto',
