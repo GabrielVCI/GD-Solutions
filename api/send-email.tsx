@@ -130,75 +130,54 @@
 
 //   return json(res, 200, { ok: true });
 // }
- 
-import type { IncomingMessage, ServerResponse } from "http";
-import React from "react";
-import { Resend } from "resend";
-import { env } from "./env.js";
+ // api/send-email.cjs
+const React = require("react");
+const { Resend } = require("resend");
 
-// Importa tus componentes de email (evita JSX en este archivo)
-import ContactAdminEmail from "../react-email-starter/emails/ContactAdminEmail.jsx";
-import ContactClientEmail from "../react-email-starter/emails/ContactClientEmail.jsx";
+// Si tu env está en ESM (env.js), NO lo importes así.
+// Usa process.env directo o crea un env.cjs (te dejo ambas opciones abajo).
 
-type Req = IncomingMessage & { body?: any };
-type Res = ServerResponse;
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-const resend = new Resend(env.resend.apiKey);
-
-function json(res: Res, status: number, payload: unknown) {
+function json(res: any, status: number, payload: unknown) {
   res.statusCode = status;
   res.setHeader("Content-Type", "application/json");
   res.end(JSON.stringify(payload));
 }
 
-function sanitize(v: unknown): string {
+
+function sanitize(v: string) {
   return String(v ?? "").replace(/\r/g, "").trim();
 }
 
-function isValidEmail(s: string): boolean {
+function isValidEmail(s: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
 }
 
-function getIp(req: Req): string {
+async function readJson(req: any) {
+  let raw = "";
+  for await (const chunk of req) raw += chunk;
+  if (!raw) return {};
+  try { return JSON.parse(raw); } catch { return {}; }
+}
+
+function getIp(req: any) {
   const xf = req.headers["x-forwarded-for"];
   if (typeof xf === "string") return xf.split(",")[0].trim();
-  return req.socket.remoteAddress ?? "unknown";
+  return (req.socket && req.socket.remoteAddress) || "unknown";
 }
 
-// Body parser manual (porque en Vercel Node, req.body puede venir vacío)
-async function readJson(req: Req): Promise<any> {
-  if (req.body) return req.body;
+// ⬇️ Ajusta estas rutas a tus emails reales
+const ContactAdminEmail = require("../react-email-starter/emails/ContactAdminEmail.js");
+const ContactClientEmail = require("../react-email-starter/emails/ContactClientEmail.js");
 
-  const chunks: Buffer[] = [];
-  for await (const chunk of req) chunks.push(Buffer.from(chunk));
-  const raw = Buffer.concat(chunks).toString("utf8");
-  if (!raw) return {};
-  try {
-    return JSON.parse(raw);
-  } catch {
-    return {};
-  }
-}
-
-export default async function handler(req: Req, res: Res) {
-  if (req.method !== "POST") {
-    return json(res, 405, { ok: false });
-  }
-
-  // Origin check (opcional)
-  if (
-    env.allowedOrigins.length &&
-    !env.allowedOrigins.includes((req.headers.origin ?? "") as string)
-  ) {
-    return json(res, 403, { ok: false });
-  }
+module.exports = async function handler(req: any, res: any) {
+  if (req.method !== "POST") return json(res, 405, { ok: false });
 
   const body = await readJson(req);
 
   // Honeypot
-  if (sanitize(body.website)) {
-    return json(res, 200, { ok: true });
-  }
+  if (sanitize(body.website)) return json(res, 200, { ok: true });
 
   const name = sanitize(body.name);
   const email = sanitize(body.email);
@@ -207,7 +186,6 @@ export default async function handler(req: Req, res: Res) {
   if (!name || !email || !message) {
     return json(res, 400, { ok: false, message: "Campos requeridos" });
   }
-
   if (!isValidEmail(email)) {
     return json(res, 400, { ok: false, message: "Email inválido" });
   }
@@ -220,29 +198,24 @@ export default async function handler(req: Req, res: Res) {
     `origin=${String(req.headers.origin || "")}`,
   ].join(" | ");
 
-  // Email a GD Solutions (SIN JSX)
+  // Email a tu empresa
   await resend.emails.send({
-    from: env.mail.from,
-    to: [env.mail.to],
+    from: process.env.MAIL_FROM,
+    to: [process.env.MAIL_TO],
     replyTo: email,
     subject: `Nuevo contacto: ${name}`,
-    react: React.createElement(ContactAdminEmail as any, {
-      name,
-      email,
-      message,
-      meta,
-    }),
+    react: React.createElement(ContactAdminEmail, { name, email, message, meta }),
   });
 
-  // Confirmación al cliente
-  if (env.sendConfirmation) {
+  // Confirmación al cliente (opcional)
+  if (process.env.SEND_CONFIRMATION === "true") {
     await resend.emails.send({
-      from: env.mail.from,
+      from: process.env.MAIL_FROM,
       to: [email],
       subject: "Hemos recibido tu mensaje - GD Solutions",
-      react: React.createElement(ContactClientEmail as any, { name }),
+      react: React.createElement(ContactClientEmail, { name }),
     });
   }
 
   return json(res, 200, { ok: true });
-}
+};
