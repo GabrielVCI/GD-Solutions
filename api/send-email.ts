@@ -143,8 +143,8 @@ import React from "react";
 import { Resend } from "resend";
 
 // OJO: tus templates pueden quedarse en .jsx/.tsx
-import ContactAdminEmail from "./ContactAdminEmail"//"../react-email-starter/emails/ContactAdminEmail.js";
-import ContactClientEmail from "./ContactClientEmail";
+import ContactAdminEmail from "./_emails/ContactAdminEmail"//"../react-email-starter/emails/ContactAdminEmail.js";
+import ContactClientEmail from "./_emails/ContactClientEmail";
 
 type ApiResponse =
   | { ok: true }
