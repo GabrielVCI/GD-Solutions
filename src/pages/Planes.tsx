@@ -18,13 +18,14 @@ export default function Plans() {
   const plans = [
     {
       name: 'Plan Básico',
-      price: 'RD$8,500',
+      price: 'RD$7,000',
       period: 'pago único',
       features: [
         'Desarrollo de sitio web sencillo',
         'Hasta 5 páginas',
         'Configuración de SEO',
         'Integración de correo y WhatsApp',
+        '6 Meses Hosting Gratis'
       ],
       highlighted: false,
     },
@@ -37,6 +38,7 @@ export default function Plans() {
         '2 páginas personalizadas adicionales',
         'Configuración de correo y WhatsApp',
         '6 meses de soporte',
+        '1 Año de Hosting Gratis'
       ],
       highlighted: true,
     },

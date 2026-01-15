@@ -47,13 +47,13 @@ export default function Home() {
   const plans = [
     {
       name: 'Plan Básico',
-      price: 'RD$8,500',
+      price: 'RD$7,000',
       period: 'pago único',
       features: [
         'Hasta 5 páginas',
         'Configuración de SEO',
         'Integración de correo y WhatsApp',
-        '1 año gratis de Hosting',
+        '6 Meses de Hosting Gratis',
       ],
       highlighted: false,
     },
@@ -65,7 +65,7 @@ export default function Home() {
         'Todo lo del Plan Básico',
         '2 páginas personalizadas adicionales',
         '6 meses de soporte',
-        '1 año gratis de Hosting',
+        '1 Año de Hosting Gratis',
       ],
       highlighted: true,
     },
