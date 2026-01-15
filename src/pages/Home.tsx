@@ -15,6 +15,14 @@ export default function Home() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+    // ✅ Promo
+  const PROMO = {
+    active: true,
+    percent: 20,
+    untilLabel: "febrero",
+  };
+
+
   const services = [
     {
       icon: Code,
@@ -616,7 +624,7 @@ export default function Home() {
 </section> */}
 
 {/* Plans Section (Premium) */}
- <section id="plans" className="py-24 md:py-32 bg-white"> {/*//bg-[#f5f5f5] */}
+<section id="plans" className="py-24 md:py-32 bg-white">
   <div className="container">
     <div className="mx-auto max-w-3xl text-center">
       <p className="text-sm font-semibold tracking-[0.18em] text-[#083351]/70 uppercase">
@@ -631,84 +639,166 @@ export default function Home() {
     </div>
 
     <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-      {plans.map((plan, index) => (
-        <div
-          key={index}
-          className={`rounded-2xl border p-8 transition-colors duration-200 ${
-            plan.highlighted
-              ? "border-[#083351] bg-[#083351] text-white"
-              : "border-[#e5e5e5] bg-white text-[#083351] hover:border-[#f4832c]"
-          }`}
-          style={{
-            animation: `fadeInUp 0.6s ease-out ${index * 0.08}s both`,
-          }}
-        >
-          <div className="flex items-start justify-between gap-6">
-            <div>
-              <h3 className="text-xl font-semibold tracking-tight">{plan.name}</h3>
-              <p className={`mt-2 text-sm ${plan.highlighted ? "text-white/70" : "text-gray-600"}`}>
-                {plan.period}
-              </p>
-            </div>
+      {plans.map((plan, index) => {
+        // ✅ Promo (usa las mismas constantes/helpers que ya pusimos antes)
+        const original = parseDOP(plan.price);
+        const hasNumericPrice = original !== null;
+        const discounted =
+          PROMO.active && hasNumericPrice ? applyDiscount(original!, PROMO.percent) : null;
 
-            <span
-              className={`text-xs font-semibold tracking-[0.14em] uppercase px-3 py-2 rounded-xl border ${
-                plan.highlighted
-                  ? "border-white/25 text-white/85"
-                  : "border-[#083351]/15 text-[#083351]/70"
-              }`}
-            >
-              {plan.highlighted ? "Recomendado" : "Plan"}
-            </span>
-          </div>
-
-          <div className="mt-8">
-            <span className="text-4xl font-semibold tracking-tight">{plan.price}</span>
-          </div>
-
-          <div className={`mt-8 h-px w-full ${plan.highlighted ? "bg-white/15" : "bg-[#e5e5e5]"}`} />
-
-          <ul className="mt-7 space-y-3">
-            {plan.features.map((feature, i) => (
-              <li key={i} className="flex items-start gap-3">
-                <CheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5 text-[#f4832c]" />
-                <span className={`text-sm ${plan.highlighted ? "text-white/85" : "text-gray-700"}`}>
-                  {feature}
-                </span>
-              </li>
-            ))}
-          </ul>
-
-          {/* CTA WhatsApp con plan */}
-          <a
-            href={buildWhatsappUrl(plan)}
-            target="_blank"
-            rel="noreferrer"
-            className={`mt-8 inline-flex w-full items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold no-underline transition-colors ${
+        return (
+          <div
+            key={index}
+            className={`relative rounded-2xl border p-8 transition duration-300 ${
               plan.highlighted
-                ? "bg-[#f4832c] text-white hover:bg-[#f79a4a]"
-                : "bg-[#083351] text-white hover:bg-[#0b3f66]"
+                ? "border-[#083351] bg-[#083351] text-white"
+                : "border-[#e5e5e5] bg-white text-[#083351] hover:border-[#f4832c]"
             }`}
+            style={{
+              animation: `fadeInUp 0.6s ease-out ${index * 0.08}s both`,
+            }}
           >
-            <FaWhatsapp className="w-5 h-5" />
-            Solicitar por WhatsApp
-          </a>
+            {/* ✅ Premium Promo Pill (por encima del card + shine) */}
+            {PROMO.active && (
+              <div className="absolute -top-4 left-6 z-20">
+                <div
+                  className={`relative overflow-hidden rounded-full border px-4 py-2 text-[11px] sm:text-xs font-semibold tracking-[0.14em] uppercase backdrop-blur-md ${
+                    plan.highlighted
+                      ? "bg-white/10 border-white/25 text-white/90"
+                      : "bg-white border-[#083351]/15 text-[#083351]"
+                  }`}
+                >
+                  <span className="relative z-10">
+                    -{PROMO.percent}% hasta {PROMO.untilLabel}
+                  </span>
 
-          {/* Secondary option */}
-          <Link href="/contacto">
-            <a
-              className={`mt-4 block text-center text-sm no-underline hover:underline ${
-                plan.highlighted ? "text-white/75" : "text-gray-600"
-              }`}
-            >
-              Prefiero el formulario
-            </a>
-          </Link>
-        </div>
-      ))}
+                  {/* Shine */}
+                  <span className="pointer-events-none absolute inset-0 opacity-70">
+                    <span className="absolute -left-1/2 top-0 h-full w-1/2 bg-gradient-to-r from-transparent via-white/35 to-transparent animate-shine" />
+                  </span>
+                </div>
+              </div>
+            )}
+ 
+
+            <div className="relative">
+              <div className="flex items-start justify-between gap-6">
+                <div>
+                  <h3 className="text-xl font-semibold tracking-tight">{plan.name}</h3>
+                  <p className={`mt-2 text-sm ${plan.highlighted ? "text-white/70" : "text-gray-600"}`}>
+                    {plan.period}
+                  </p>
+                </div>
+
+                <span
+                  className={`text-xs font-semibold tracking-[0.14em] uppercase px-3 py-2 rounded-xl border ${
+                    plan.highlighted
+                      ? "border-white/25 text-white/85"
+                      : "border-[#083351]/15 text-[#083351]/70"
+                  }`}
+                >
+                  {plan.highlighted ? "Recomendado" : "Plan"}
+                </span>
+              </div>
+
+              {/* ✅ Precio con promo */}
+              <div className="mt-8">
+                {PROMO.active && hasNumericPrice ? (
+                  <div className="flex flex-col gap-1.5">
+                    <span className="text-4xl font-semibold tracking-tight">
+                      {formatDOP(discounted!)}
+                    </span>
+
+                    <div
+                      className={`flex flex-wrap items-center gap-2 text-sm ${
+                        plan.highlighted ? "text-white/70" : "text-gray-600"
+                      }`}
+                    >
+                      <span className="line-through opacity-80">{plan.price}</span>
+ 
+                      <span
+                        className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold border ${
+                          plan.highlighted
+                            ? "border-white/20 bg-white/10 text-white/90"
+                            : "border-[#f4832c]/25 bg-[#f4832c]/10 text-[#f4832c]"
+                        }`}
+                      >
+                        Ahorras {formatDOP(original! - discounted!)}
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-2">
+                    <span className="text-4xl font-semibold tracking-tight">{plan.price}</span>
+
+                    {/* ✅ Plan Empresarial / A medida: mantiene la promo sin monto fijo */}
+                    {PROMO.active && (
+                      <div
+                        className={`inline-flex w-fit items-center rounded-full px-3 py-1 text-xs font-semibold border ${
+                          plan.highlighted
+                            ? "border-white/20 bg-white/10 text-white/90"
+                            : "border-[#f4832c]/25 bg-[#f4832c]/10 text-[#f4832c]"
+                        }`}
+                      >
+                        Ahorra {PROMO.percent}% del monto final
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              <div className={`mt-8 h-px w-full ${plan.highlighted ? "bg-white/15" : "bg-[#e5e5e5]"}`} />
+
+              <ul className="mt-7 space-y-3">
+                {plan.features.map((feature, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5 text-[#f4832c]" />
+                    <span className={`text-sm ${plan.highlighted ? "text-white/85" : "text-gray-700"}`}>
+                      {feature}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+
+              {/* ✅ CTA WhatsApp con plan (incluye promo en el mensaje) */}
+              <a
+                href={buildWhatsappUrl(plan)}
+                target="_blank"
+                rel="noreferrer"
+                className={`mt-8 inline-flex w-full items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold no-underline transition-colors ${
+                  plan.highlighted
+                    ? "bg-[#f4832c] text-white hover:bg-[#f79a4a]"
+                    : "bg-[#083351] text-white hover:bg-[#0b3f66]"
+                }`}
+              >
+                <FaWhatsapp className="w-5 h-5" />
+                Solicitar por WhatsApp
+              </a>
+
+              {/* Secondary option */}
+              <Link href="/contacto">
+                <a
+                  className={`mt-4 block text-center text-sm no-underline hover:underline ${
+                    plan.highlighted ? "text-white/75" : "text-gray-600"
+                  }`}
+                >
+                  Prefiero el formulario
+                </a>
+              </Link>
+            </div>
+          </div>
+        );
+      })}
     </div>
   </div>
+
+  {/* ✅ IMPORTANTE:
+      Asegúrate de tener estos estilos (una sola vez en tu página/layout):
+      @keyframes shine { 0% {transform: translateX(-120%);} 100% {transform: translateX(220%);} }
+      .animate-shine { animation: shine 1.8s ease-in-out infinite; }
+  */}
 </section>
+
 
 
 {/* Contact (keep your current section below) */}
@@ -759,5 +849,33 @@ export default function Home() {
       </div>
   );
 }   
+  const WHATSAPP_PHONE = "18495642217";
+
+function buildWhatsappUrl(
+    plan: { name: string },
+    promo: { active: boolean; percent: number; untilLabel: string }
+  ) {
+    const promoText = promo.active ? ` (con ${promo.percent}% OFF hasta ${promo.untilLabel})` : "";
+    const message = `Hola GD Solutions, quiero solicitar el ${plan.name}${promoText}. Mi negocio es: ________.`;
+    return `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`;
+  }
+
+  // Helpers
+  function parseDOP(price: string): number | null {
+    // Soporta "RD$7,000" / "RD$ 7,000" / "7000". Devuelve null si no es número (ej: "$A MEDIDA")
+    const cleaned = String(price).replace(/RD\$\s?/gi, "").replace(/[,\s]/g, "").trim();
+    if (!cleaned) return null;
+    const n = Number(cleaned);
+    return Number.isFinite(n) ? n : null;
+  }
+
+  function applyDiscount(amount: number, percent: number) {
+    const factor = (100 - percent) / 100;
+    return Math.round(amount * factor);
+  }
+
+  function formatDOP(amount: number) {
+    return `RD$${amount.toLocaleString("en-US")}`;
+  }
 
 
