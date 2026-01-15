@@ -25,7 +25,7 @@ export default function Plans() {
         'Hasta 5 páginas',
         'Configuración de SEO',
         'Integración de correo y WhatsApp',
-        '6 Meses Hosting Gratis'
+        '6 Meses de Hosting Gratis'
       ],
       highlighted: false,
     },
