@@ -315,7 +315,7 @@ export default function Plans() {
   const PROMO = {
     active: true,
     percent: 20,
-    untilLabel: "febrero",
+    untilLabel: "marzo",
   };
 
   const plans = [
