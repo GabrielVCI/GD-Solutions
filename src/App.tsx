@@ -9,6 +9,7 @@ import Services from "./pages/Services";
 import About from "./pages/About";
 import Planes from "./pages/Planes"
 import Contacto from "./pages/Contacto"
+import Propuesta from "./pages/Propuesta"
 import WhatsAppFloat from "./components/WhatsAppFloat";
 import ScrollToTop from "./components/ScrollToTop";
 import Legal from "./pages/Legal";
@@ -27,6 +28,8 @@ function Router() {
         <Route path={"/contacto"} component={Contacto} />
         <Route path={"/404"} component={NotFound} />
         <Route path={"/legal"} component={Legal} />
+        <Route path={"/propuesta"} component={Propuesta} />
+
         <Route path={"/terms"} component={Terms} />
         {/* Final fallback route */}
         <Route component={NotFound} />
